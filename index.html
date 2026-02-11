@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <title>Will You Be My Valentine?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .container.hidden {
+            display: none;
+        }
+
+        /* Cover screen */
+        .cover-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+
+        .cover-screen.hidden {
+            display: none;
+        }
+
+        .cover-content {
+            text-align: center;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .envelope {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cover-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 2rem;
+        }
+
+        .btn-open {
+            padding: 14px 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b9d, #ff8a80);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-open:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 107, 157, 0.4);
+        }
+
+        .title-container {
+            display: block;
+            margin-bottom: 2rem;
+        }
+
+        .title-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        h1 {
+            color: #222;
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1.4;
+        }
+
+        .sparkle {
+            position: absolute;
+            font-size: 1.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .sparkle-left {
+            left: -2rem;
+        }
+
+        .sparkle-right {
+            right: -2rem;
+        }
+
+        .kitty-image {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 2.5rem;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn-yes-wrapper, .btn-no-wrapper {
+            width: 100px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-yes {
+            background: #4ade80;
+            color: white;
+        }
+
+        .btn-no {
+            background: #f87171;
+            color: white;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 90%;
+            width: 320px;
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-kitty {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .modal-text {
+            color: #222;
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .close-modal {
+            margin-top: 1.5rem;
+            padding: 10px 25px;
+            background: #e5e7eb;
+            color: #374151;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        /* Success screen */
+        .success-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            flex-direction: column;
+        }
+
+        .success-screen.show {
+            display: flex;
+        }
+
+        .success-content {
+            text-align: center;
+            animation: bounceIn 0.5s ease;
+            z-index: 2002;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .success-kitty {
+            max-width: 220px;
+            height: auto;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+        }
+
+        .success-text {
+            color: #222;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .create-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #666;
+            text-decoration: none;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 20px;
+            transition: background 0.2s;
+        }
+
+        .create-link:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hearts animation */
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 2001;
+        }
+
+        .heart {
+            position: absolute;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cover screen -->
+    <div class="cover-screen" id="coverScreen">
+        <div class="cover-content">
+            <div class="envelope">💌</div>
+            <p class="cover-text"><span id="coverName">You've</span> received a Valentine!</p>
+            <button class="btn-open" onclick="openCard()">Open</button>
+        </div>
+    </div>
+
+    <div class="container hidden" id="mainContainer">
+        <div class="title-container">
+            <div class="title-wrapper">
+                <span class="sparkle sparkle-left">✨</span>
+                <h1><span id="questionName"></span>Will you be<br>my Valentine?</h1>
+                <span class="sparkle sparkle-right">✨</span>
+            </div>
+        </div>
+
+        <!-- Replace this URL with your preferred kitty image -->
+        <img src="https://placecats.com/millie/300/300" alt="Cute kitty" class="kitty-image" id="mainKitty">
+
+        <div class="buttons" id="buttonContainer">
+            <div class="btn-yes-wrapper">
+                <button class="btn btn-yes" onclick="sayYes()">Yes</button>
+            </div>
+            <div class="btn-no-wrapper">
+                <button class="btn btn-no" id="noBtn">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meme modal -->
+    <div class="modal" id="angryModal">
+        <div class="modal-content">
+            <img src="" alt="Meme" class="modal-kitty" id="memeImage">
+            <p class="modal-text" id="memeCaption"></p>
+            <button class="close-modal" id="memeButton" onclick="closeModal()">Okay, okay...</button>
+        </div>
+    </div>
+
+    <!-- Meme sounds -->
+    <audio id="memeSound" preload="auto"></audio>
+
+    <!-- Success screen -->
+    <div class="success-screen" id="successScreen">
+        <div class="hearts" id="heartsContainer"></div>
+        <div class="success-content">
+            <img src="happy.gif" alt="Happy" class="success-kitty" id="happyKitty">
+            <p class="success-text">Yay!! Happy Valentines Day!</p>
+            <a href="create.html" class="create-link">Create your own →</a>
+        </div>
+    </div>
+
+    <!-- Audio element for success sound -->
+    <audio id="happySound" preload="auto">
+        <!-- Add your sound file here -->
+        <source src="happy.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Get params from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const recipientName = urlParams.get('name');
+        const catNumber = urlParams.get('cat') || '1';
+
+        if (recipientName) {
+            document.getElementById('coverName').textContent = recipientName + ',';
+            document.getElementById('questionName').innerHTML = recipientName + ',<br>';
+        }
+
+        document.getElementById('mainKitty').src = catNumber + '.jpg';
+
+        const coverScreen = document.getElementById('coverScreen');
+        const mainContainer = document.getElementById('mainContainer');
+        const noBtn = document.getElementById('noBtn');
+        const buttonContainer = document.getElementById('buttonContainer');
+        const angryModal = document.getElementById('angryModal');
+        const successScreen = document.getElementById('successScreen');
+        const happySound = document.getElementById('happySound');
+        const memeImage = document.getElementById('memeImage');
+        const memeCaption = document.getElementById('memeCaption');
+        const memeButton = document.getElementById('memeButton');
+        const memeSound = document.getElementById('memeSound');
+
+        const memes = [
+            { id: 'are-you-stupid', caption: "Aren't you getting it?", button: "I'll try harder..." },
+            { id: 'ew', caption: 'Do I disgust you?', button: "No, you're cute!" },
+            { id: 'huh', caption: 'Wait - what are you doing?', button: "Sorry, sorry!" },
+            { id: 'sad', caption: "You're making me sad...", button: "Don't be sad!" }
+        ];
+
+        let noAttempts = 0;
+        let memeShowCount = 0;
+        let lastMemeId = null;
+        const memeOrder = ['huh', 'ew', 'are-you-stupid', 'sad'];
+
+        function openCard() {
+            coverScreen.classList.add('hidden');
+            mainContainer.classList.remove('hidden');
+        }
+
+        function showRandomMeme() {
+            let meme;
+
+            if (memeShowCount < memeOrder.length) {
+                // First 4: follow the set order
+                meme = memes.find(m => m.id === memeOrder[memeShowCount]);
+            } else {
+                // After that: randomize but don't repeat last
+                const availableMemes = memes.filter(m => m.id !== lastMemeId);
+                meme = availableMemes[Math.floor(Math.random() * availableMemes.length)];
+            }
+
+            memeShowCount++;
+            lastMemeId = meme.id;
+            memeImage.src = meme.id + '.gif';
+            memeCaption.textContent = meme.caption;
+            memeButton.textContent = meme.button;
+            memeSound.src = meme.id + '.mp3';
+            angryModal.classList.add('show');
+            memeSound.play().catch(() => {});
+        }
+
+        function moveNoButton() {
+            noAttempts++;
+
+            // Show meme after 3 attempts, then every 3 attempts
+            if (noAttempts >= 3 && noAttempts % 3 === 0) {
+                showRandomMeme();
+                return;
+            }
+
+            // Get button dimensions
+            const btnRect = noBtn.getBoundingClientRect();
+
+            // Calculate random position within viewport
+            const maxX = window.innerWidth - btnRect.width - 20;
+            const maxY = window.innerHeight - btnRect.height - 20;
+
+            const randomX = Math.max(20, Math.random() * maxX);
+            const randomY = Math.max(20, Math.random() * maxY);
+
+            // Move button to fixed position on screen
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.transition = 'none';
+        }
+
+        // Desktop: move on hover
+        noBtn.addEventListener('mouseenter', moveNoButton);
+
+        // Mobile: move on touch start
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveNoButton();
+        }, { passive: false });
+
+        function closeModal() {
+            angryModal.classList.remove('show');
+            memeSound.pause();
+            memeSound.currentTime = 0;
+        }
+
+        function sayYes() {
+            successScreen.classList.add('show');
+            createHearts();
+
+            // Try to play sound
+            happySound.play().catch(() => {
+                console.log('Sound autoplay was blocked');
+            });
+        }
+
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            const hearts = ['❤️', '💕', '💖', '💗', '💓', '💝', '💘', '🩷'];
+
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animationDuration = (2 + Math.random() * 2) + 's';
+                    heart.style.fontSize = (1.5 + Math.random() * 1.5) + 'rem';
+                    container.appendChild(heart);
+
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 100);
+            }
+
+            // Keep creating hearts
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (2 + Math.random() * 2) + 's';
+                heart.style.fontSize = (1.5 + Math.random() * 1.5) + 'rem';
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 4000);
+            }, 200);
+        }
+
+        // Close modal when clicking outside
+        angryModal.addEventListener('click', function(e) {
+            if (e.target === angryModal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <title>Create Your Valentine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #222;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1rem;
+            font-family: inherit;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff6b9d;
+        }
+
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .cat-option {
+            cursor: pointer;
+            border: 3px solid transparent;
+            border-radius: 12px;
+            padding: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .cat-option:hover {
+            background: #f9fafb;
+        }
+
+        .cat-option.selected {
+            border-color: #ff6b9d;
+            background: #fff0f3;
+        }
+
+        .cat-option img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .btn-generate {
+            padding: 14px 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b9d, #ff8a80);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        .btn-generate:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(255, 107, 157, 0.4);
+        }
+
+        .result {
+            display: none;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f9fafb;
+            border-radius: 12px;
+            text-align: left;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result-label {
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-url {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .result-url input {
+            flex: 1;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .btn-copy {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            background: #222;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: #444;
+        }
+
+        .btn-copy.copied {
+            background: #4ade80;
+        }
+
+        .preview-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #ff6b9d;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .preview-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Create Your Valentine ✨</h1>
+
+        <div class="form-group">
+            <label for="nameInput">Recipient's name</label>
+            <input type="text" id="nameInput" placeholder="Enter their name...">
+        </div>
+
+        <div class="form-group">
+            <label>Choose a cat</label>
+            <div class="cat-grid" id="catGrid">
+                <div class="cat-option selected" data-cat="1">
+                    <img src="1.jpg" alt="Cat 1">
+                </div>
+                <div class="cat-option" data-cat="2">
+                    <img src="2.jpg" alt="Cat 2">
+                </div>
+                <div class="cat-option" data-cat="3">
+                    <img src="3.jpg" alt="Cat 3">
+                </div>
+                <div class="cat-option" data-cat="4">
+                    <img src="4.jpg" alt="Cat 4">
+                </div>
+                <div class="cat-option" data-cat="5">
+                    <img src="5.jpg" alt="Cat 5">
+                </div>
+                <div class="cat-option" data-cat="6">
+                    <img src="6.jpg" alt="Cat 6">
+                </div>
+                <div class="cat-option" data-cat="7">
+                    <img src="7.jpg" alt="Cat 7">
+                </div>
+                <div class="cat-option" data-cat="8">
+                    <img src="8.jpg" alt="Cat 8">
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-generate" onclick="generateLink()">Generate Link</button>
+
+        <div class="result" id="result">
+            <p class="result-label">Your Valentine link:</p>
+            <div class="result-url">
+                <input type="text" id="resultUrl" readonly>
+                <button class="btn-copy" id="copyBtn" onclick="copyLink()">Copy</button>
+            </div>
+            <a href="#" class="preview-link" id="previewLink" target="_blank">Preview your Valentine →</a>
+        </div>
+    </div>
+
+    <script>
+        let selectedCat = '1';
+        const catOptions = document.querySelectorAll('.cat-option');
+        const resultDiv = document.getElementById('result');
+        const resultUrl = document.getElementById('resultUrl');
+        const previewLink = document.getElementById('previewLink');
+        const copyBtn = document.getElementById('copyBtn');
+
+        catOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                catOptions.forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedCat = option.dataset.cat;
+            });
+        });
+
+        function generateLink() {
+            const name = document.getElementById('nameInput').value.trim();
+            const baseUrl = window.location.origin + window.location.pathname.replace('create.html', 'index.html');
+
+            const params = new URLSearchParams();
+            if (name) params.set('name', name);
+            params.set('cat', selectedCat);
+
+            const fullUrl = baseUrl + '?' + params.toString();
+
+            resultUrl.value = fullUrl;
+            previewLink.href = fullUrl;
+            resultDiv.classList.add('show');
+        }
+
+        function copyLink() {
+            resultUrl.select();
+            document.execCommand('copy');
+
+            copyBtn.textContent = 'Copied!';
+            copyBtn.classList.add('copied');
+
+            setTimeout(() => {
+                copyBtn.textContent = 'Copy';
+                copyBtn.classList.remove('copied');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
