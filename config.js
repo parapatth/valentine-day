@@ -21,9 +21,9 @@ window.VALENTINE_CONFIG = {
       "note": "No distractions"
     },
     {
-      "title": "Mangan bukan Mangu",
-      "emoji": "🍱",
-      "subtitle": "Eat together",
+      "title": "As per your request princess",
+      "emoji": "👸",
+      "subtitle": "by your request",
       "note": "Same vibe"
     }
   ],
