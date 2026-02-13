@@ -22,7 +22,7 @@ window.VALENTINE_CONFIG = {
     },
     {
       "title": "As per your request princess",
-      "emoji": "👸",
+      "emoji": "👸🏻",
       "subtitle": "by your request",
       "note": "Same vibe"
     }
