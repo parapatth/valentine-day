@@ -11,7 +11,7 @@
   <body>
     <main class="wrap">
       <section class="card" style="padding:18px 16px 18px;">
-        <div class="title">Okay <span class="pink" id="nick">nama</span>… pick our date 💘</div>
+        <div class="title">Okay <span class="pink" id="nick">Babe</span>… pick our date 💘</div>
         <p class="subtitle">Pick one vibe. Then (optional) choose the day.</p>
 
         <div class="grid" id="choices"></div>
@@ -34,7 +34,7 @@
 
     <script>
       const cfg = window.VALENTINE_CONFIG || {};
-      document.getElementById('nick').textContent = cfg.nickname || 'nama';
+      document.getElementById('nick').textContent = cfg.nickname || 'Babe';
 
       const cardsWrap = document.getElementById('choices');
       const options = Array.isArray(cfg.dateOptions) && cfg.dateOptions.length ? cfg.dateOptions : [];
