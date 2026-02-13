@@ -5,7 +5,7 @@ window.VALENTINE_CONFIG = {
     {
       "title": "Movie Night",
       "emoji": "🎬",
-      "subtitle": "Same movie • video call / Bioskop",
+      "subtitle": "Movie time",
       "note": "We pick a movie + call"
     },
     {
