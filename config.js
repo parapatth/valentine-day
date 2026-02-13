@@ -39,8 +39,8 @@ window.VALENTINE_CONFIG = {
       "subtitle": "Easy win"
     },
     {
-      "title": "McDonald's / KFC 	",
-      "emoji": "🍔🍗",
+      "title": "By Requested 	",
+      "emoji": "🍽️",
       "subtitle": "Comfort"
     },
     {
